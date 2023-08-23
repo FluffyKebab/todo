@@ -1,0 +1,68 @@
+syntax = "proto3";
+option go_package = "./pb";
+package proto;
+
+service TodoService {
+     rpc HealthCheck(HealthCheckRequest) returns (HealthCheckResponse);
+     rpc CreateTodo(CreateTodoRequest) returns (CreateTodoResponse);
+     rpc UpdateTodoDone(UpdateTodoDoneRequest) returns (UpdateTodoDoneResponse);
+     rpc UpdateTodoBody(UpdateTodoBodyRequest) returns (UpdateTodoBodyResponse);
+     rpc DeleteTodo(DeleteTodoRequest) returns (DeleteTodoResponse);
+     rpc ListUserTodos(ListUserTodosRequest) returns (ListUserTodosResponse);
+}
+
+message Todo {
+     string id = 1;
+     string body = 2;
+     bool done = 3;
+}
+
+message HealthCheckRequest {}
+
+message HealthCheckResponse {
+     enum ServingStatus {
+          UNKNOWN = 0;
+          SERVING = 1;
+          NOT_SERVING = 2;
+     }
+     ServingStatus status = 1;
+}
+
+message CreateTodoRequest {
+     string userID = 1;
+     string token = 2;
+     string body = 3;
+     bool done = 4;
+}
+
+message CreateTodoResponse {
+     string id = 1;
+}
+
+message UpdateTodoDoneRequest {
+     string id = 1;
+     bool done = 2;
+}
+
+message UpdateTodoDoneResponse {}
+
+message UpdateTodoBodyRequest {
+     string id = 1;
+     bool done = 2;
+}
+
+message UpdateTodoBodyResponse {}
+
+message DeleteTodoRequest {
+     string id = 1;
+}
+
+message DeleteTodoResponse {}
+
+message ListUserTodosRequest {
+     string userID = 1;
+}
+
+message ListUserTodosResponse {
+     repeated Todo todos = 1;
+}
