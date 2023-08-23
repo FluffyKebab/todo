@@ -1,5 +1,7 @@
 package todo
 
+import "context"
+
 type User struct {
 	ID   string
 	Name string
@@ -13,7 +15,7 @@ type Todo struct {
 }
 
 type UserService interface {
-	CreateUser(u User) (string, error)
+	CreateUser(ctx context.Context, u User) (string, error)
 }
 
 type TodoService interface {

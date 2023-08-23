@@ -5,9 +5,9 @@ package proto;
 service TodoService {
      rpc HealthCheck(HealthCheckRequest) returns (HealthCheckResponse);
      rpc CreateTodo(CreateTodoRequest) returns (CreateTodoResponse);
-     rpc UpdateTodoDone(UpdateTodoDoneRequest) returns (UpdateTodoDoneResponse);
-     rpc UpdateTodoBody(UpdateTodoBodyRequest) returns (UpdateTodoBodyResponse);
-     rpc DeleteTodo(DeleteTodoRequest) returns (DeleteTodoResponse);
+     rpc UpdateTodoDone(UpdateTodoDoneRequest) returns (EmptyResponse);
+     rpc UpdateTodoBody(UpdateTodoBodyRequest) returns (EmptyResponse);
+     rpc DeleteTodo(DeleteTodoRequest) returns (EmptyResponse);
      rpc ListUserTodos(ListUserTodosRequest) returns (ListUserTodosResponse);
 }
 
@@ -44,20 +44,14 @@ message UpdateTodoDoneRequest {
      bool done = 2;
 }
 
-message UpdateTodoDoneResponse {}
-
 message UpdateTodoBodyRequest {
      string id = 1;
      bool done = 2;
 }
 
-message UpdateTodoBodyResponse {}
-
 message DeleteTodoRequest {
      string id = 1;
 }
-
-message DeleteTodoResponse {}
 
 message ListUserTodosRequest {
      string userID = 1;
@@ -66,3 +60,5 @@ message ListUserTodosRequest {
 message ListUserTodosResponse {
      repeated Todo todos = 1;
 }
+
+message EmptyResponse {}

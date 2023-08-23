@@ -1,0 +1,16 @@
+syntax = "proto3";
+option go_package = "./pb";
+package proto;
+
+service UserService {
+    rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+}
+
+message CreateUserRequest {
+    string name = 1;
+}
+
+message CreateUserResponse {
+    string userID = 1;
+    string token = 2;
+}

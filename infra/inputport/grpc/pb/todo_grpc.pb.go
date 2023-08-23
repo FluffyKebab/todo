@@ -33,9 +33,9 @@ const (
 type TodoServiceClient interface {
 	HealthCheck(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (*HealthCheckResponse, error)
 	CreateTodo(ctx context.Context, in *CreateTodoRequest, opts ...grpc.CallOption) (*CreateTodoResponse, error)
-	UpdateTodoDone(ctx context.Context, in *UpdateTodoDoneRequest, opts ...grpc.CallOption) (*UpdateTodoDoneResponse, error)
-	UpdateTodoBody(ctx context.Context, in *UpdateTodoBodyRequest, opts ...grpc.CallOption) (*UpdateTodoBodyResponse, error)
-	DeleteTodo(ctx context.Context, in *DeleteTodoRequest, opts ...grpc.CallOption) (*DeleteTodoResponse, error)
+	UpdateTodoDone(ctx context.Context, in *UpdateTodoDoneRequest, opts ...grpc.CallOption) (*EmptyResponse, error)
+	UpdateTodoBody(ctx context.Context, in *UpdateTodoBodyRequest, opts ...grpc.CallOption) (*EmptyResponse, error)
+	DeleteTodo(ctx context.Context, in *DeleteTodoRequest, opts ...grpc.CallOption) (*EmptyResponse, error)
 	ListUserTodos(ctx context.Context, in *ListUserTodosRequest, opts ...grpc.CallOption) (*ListUserTodosResponse, error)
 }
 
@@ -65,8 +65,8 @@ func (c *todoServiceClient) CreateTodo(ctx context.Context, in *CreateTodoReques
 	return out, nil
 }
 
-func (c *todoServiceClient) UpdateTodoDone(ctx context.Context, in *UpdateTodoDoneRequest, opts ...grpc.CallOption) (*UpdateTodoDoneResponse, error) {
-	out := new(UpdateTodoDoneResponse)
+func (c *todoServiceClient) UpdateTodoDone(ctx context.Context, in *UpdateTodoDoneRequest, opts ...grpc.CallOption) (*EmptyResponse, error) {
+	out := new(EmptyResponse)
 	err := c.cc.Invoke(ctx, TodoService_UpdateTodoDone_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -74,8 +74,8 @@ func (c *todoServiceClient) UpdateTodoDone(ctx context.Context, in *UpdateTodoDo
 	return out, nil
 }
 
-func (c *todoServiceClient) UpdateTodoBody(ctx context.Context, in *UpdateTodoBodyRequest, opts ...grpc.CallOption) (*UpdateTodoBodyResponse, error) {
-	out := new(UpdateTodoBodyResponse)
+func (c *todoServiceClient) UpdateTodoBody(ctx context.Context, in *UpdateTodoBodyRequest, opts ...grpc.CallOption) (*EmptyResponse, error) {
+	out := new(EmptyResponse)
 	err := c.cc.Invoke(ctx, TodoService_UpdateTodoBody_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -83,8 +83,8 @@ func (c *todoServiceClient) UpdateTodoBody(ctx context.Context, in *UpdateTodoBo
 	return out, nil
 }
 
-func (c *todoServiceClient) DeleteTodo(ctx context.Context, in *DeleteTodoRequest, opts ...grpc.CallOption) (*DeleteTodoResponse, error) {
-	out := new(DeleteTodoResponse)
+func (c *todoServiceClient) DeleteTodo(ctx context.Context, in *DeleteTodoRequest, opts ...grpc.CallOption) (*EmptyResponse, error) {
+	out := new(EmptyResponse)
 	err := c.cc.Invoke(ctx, TodoService_DeleteTodo_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -107,9 +107,9 @@ func (c *todoServiceClient) ListUserTodos(ctx context.Context, in *ListUserTodos
 type TodoServiceServer interface {
 	HealthCheck(context.Context, *HealthCheckRequest) (*HealthCheckResponse, error)
 	CreateTodo(context.Context, *CreateTodoRequest) (*CreateTodoResponse, error)
-	UpdateTodoDone(context.Context, *UpdateTodoDoneRequest) (*UpdateTodoDoneResponse, error)
-	UpdateTodoBody(context.Context, *UpdateTodoBodyRequest) (*UpdateTodoBodyResponse, error)
-	DeleteTodo(context.Context, *DeleteTodoRequest) (*DeleteTodoResponse, error)
+	UpdateTodoDone(context.Context, *UpdateTodoDoneRequest) (*EmptyResponse, error)
+	UpdateTodoBody(context.Context, *UpdateTodoBodyRequest) (*EmptyResponse, error)
+	DeleteTodo(context.Context, *DeleteTodoRequest) (*EmptyResponse, error)
 	ListUserTodos(context.Context, *ListUserTodosRequest) (*ListUserTodosResponse, error)
 	mustEmbedUnimplementedTodoServiceServer()
 }
@@ -124,13 +124,13 @@ func (UnimplementedTodoServiceServer) HealthCheck(context.Context, *HealthCheckR
 func (UnimplementedTodoServiceServer) CreateTodo(context.Context, *CreateTodoRequest) (*CreateTodoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateTodo not implemented")
 }
-func (UnimplementedTodoServiceServer) UpdateTodoDone(context.Context, *UpdateTodoDoneRequest) (*UpdateTodoDoneResponse, error) {
+func (UnimplementedTodoServiceServer) UpdateTodoDone(context.Context, *UpdateTodoDoneRequest) (*EmptyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateTodoDone not implemented")
 }
-func (UnimplementedTodoServiceServer) UpdateTodoBody(context.Context, *UpdateTodoBodyRequest) (*UpdateTodoBodyResponse, error) {
+func (UnimplementedTodoServiceServer) UpdateTodoBody(context.Context, *UpdateTodoBodyRequest) (*EmptyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateTodoBody not implemented")
 }
-func (UnimplementedTodoServiceServer) DeleteTodo(context.Context, *DeleteTodoRequest) (*DeleteTodoResponse, error) {
+func (UnimplementedTodoServiceServer) DeleteTodo(context.Context, *DeleteTodoRequest) (*EmptyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteTodo not implemented")
 }
 func (UnimplementedTodoServiceServer) ListUserTodos(context.Context, *ListUserTodosRequest) (*ListUserTodosResponse, error) {

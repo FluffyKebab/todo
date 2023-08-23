@@ -13,27 +13,20 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-type Server struct {
-	pb.TodoServiceServer
+type todoServer struct {
+	pb.UnimplementedTodoServiceServer
 	todoService todo.TodoService
 	auth        auth.Authenticator
 	logger      log.Logger
 }
 
-func NewServer(authenticator auth.Authenticator, todoService todo.TodoService) *Server {
-	return &Server{
-		todoService: todoService,
-		auth:        authenticator,
-	}
-}
-
-func (s *Server) HealthCheck(ctx context.Context, req *pb.HealthCheckRequest) (*pb.HealthCheckResponse, error) {
+func (s *todoServer) HealthCheck(ctx context.Context, req *pb.HealthCheckRequest) (*pb.HealthCheckResponse, error) {
 	return &pb.HealthCheckResponse{
 		Status: pb.HealthCheckResponse_SERVING,
 	}, nil
 }
 
-func (s *Server) CreateTodo(ctx context.Context, req *pb.CreateTodoRequest) (*pb.CreateTodoResponse, error) {
+func (s *todoServer) CreateTodo(ctx context.Context, req *pb.CreateTodoRequest) (*pb.CreateTodoResponse, error) {
 	hasAccess, err := s.auth.HasAccess(req.Token, req.UserID)
 	if err != nil {
 		return nil, status.Error(codes.Unauthenticated, err.Error())
