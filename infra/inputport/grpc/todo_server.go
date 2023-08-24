@@ -53,7 +53,7 @@ func (s *todoServer) UpdateTodoDone(ctx context.Context, req *pb.UpdateTodoDoneR
 	}
 
 	err = s.todoService.UpdateTodo(ctx, todo.UpdateTodoRequest{
-		NewTodo:          todo.Todo{Done: req.Done},
+		NewTodo:          todo.Todo{Done: req.Done, ID: req.Id},
 		ShouldUpdateDone: true,
 	})
 	if err != nil {
@@ -71,7 +71,7 @@ func (s *todoServer) UpdateTodoBody(ctx context.Context, req *pb.UpdateTodoBodyR
 	}
 
 	err = s.todoService.UpdateTodo(ctx, todo.UpdateTodoRequest{
-		NewTodo:          todo.Todo{Body: req.Body},
+		NewTodo:          todo.Todo{Body: req.Body, ID: req.Id},
 		ShouldUpdateBody: true,
 	})
 	if err != nil {

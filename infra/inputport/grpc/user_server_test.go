@@ -10,41 +10,33 @@ import (
 	"github.com/FluffyKebab/todo/infra/outputport/log/testlog"
 	"github.com/FluffyKebab/todo/infra/outputport/storage/mock"
 	"github.com/stretchr/testify/require"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
 )
 
 func TestUserServer(t *testing.T) {
-	t.Parallel()
-
 	userIdReturned := "good_user_id"
 
-	userServer := &userServer{
-		userService: mock.UserService{
-			CreateUserFunc: func(_ context.Context, _ todo.User) (string, error) {
+	s := NewServer(
+		testlog.Logger{ErrorFunc: func(err error) {
+			t.Fatalf("unexpected error: %s", err.Error())
+		}},
+		jwt.NewAuthenticator("secret_key"),
+		nil,
+		mock.UserService{
+			CreateUserFunc: func(_ context.Context, req todo.User) (string, error) {
+				require.Equal(t, "bob", req.Name)
 				return userIdReturned, nil
 			},
 		},
-		auth: jwt.NewAuthenticator("secret_key"),
-		logger: testlog.Logger{ErrorFunc: func(err error) {
-			t.Fatalf("unexpected error: %s", err.Error())
-		}},
-	}
+	)
 
-	go func() {
-		err := userServer.run(":8080")
-		require.NoError(t, err)
-	}()
+	lis := runTestServer(t, s)
+	client := createUserClient(t, lis)
 
-	cc, err := grpc.Dial("localhost:8080", grpc.WithTransportCredentials(insecure.NewCredentials()))
-	require.NoError(t, err)
-
-	client := pb.NewUserServiceClient(cc)
 	res, err := client.CreateUser(context.Background(), &pb.CreateUserRequest{Name: "bob"})
 	require.NoError(t, err)
 	require.Equal(t, userIdReturned, res.UserID, "user id in response wrong")
 
-	userIdInToken, err := userServer.auth.GetUserID(res.Token)
+	userIdInToken, err := s.userServer.auth.GetUserID(res.Token)
 	require.NoError(t, err)
-	require.Equal(t, userIdReturned, userIdInToken, "user id in response wrong")
+	require.Equal(t, userIdReturned, userIdInToken, "user id in token wrong")
 }

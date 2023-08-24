@@ -1,16 +1,20 @@
 package grpc
 
 import (
+	"net"
+
 	"github.com/FluffyKebab/todo/app/auth"
 	"github.com/FluffyKebab/todo/app/log"
 	"github.com/FluffyKebab/todo/domain/todo"
+	"github.com/FluffyKebab/todo/infra/inputport/grpc/pb"
+	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
 type Server struct {
-	*todoServer
-	*userServer
+	todoServer *todoServer
+	userServer *userServer
 }
 
 func NewServer(
@@ -31,6 +35,19 @@ func NewServer(
 			logger:      logger,
 		},
 	}
+}
+
+func (s *Server) ListenAndServe(port string) error {
+	lister, err := net.Listen("tcp", port)
+	if err != nil {
+		return err
+	}
+
+	server := grpc.NewServer()
+	pb.RegisterUserServiceServer(server, s.userServer)
+	pb.RegisterTodoServiceServer(server, s.todoServer)
+	return server.Serve(lister)
+
 }
 
 func authenticate(auth auth.Authenticator, token string, userId string) error {

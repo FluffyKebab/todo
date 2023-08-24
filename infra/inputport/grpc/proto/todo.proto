@@ -43,13 +43,15 @@ message CreateTodoResponse {
 message UpdateTodoDoneRequest {
      string userID = 1;
      string token = 2;
-     bool done = 3;
+     string id = 3;
+     bool done = 4;
 }
 
 message UpdateTodoBodyRequest {
      string userID = 1;
      string token = 2;
-     string body = 3;
+     string id = 3;
+     string body = 4;
 }
 
 message DeleteTodoRequest {
