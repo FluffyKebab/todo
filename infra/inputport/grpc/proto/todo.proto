@@ -13,8 +13,9 @@ service TodoService {
 
 message Todo {
      string id = 1;
-     string body = 2;
-     bool done = 3;
+     string userID = 2;
+     string body = 3;
+     bool done = 4;
 }
 
 message HealthCheckRequest {}
@@ -40,21 +41,26 @@ message CreateTodoResponse {
 }
 
 message UpdateTodoDoneRequest {
-     string id = 1;
-     bool done = 2;
+     string userID = 1;
+     string token = 2;
+     bool done = 3;
 }
 
 message UpdateTodoBodyRequest {
-     string id = 1;
-     bool done = 2;
+     string userID = 1;
+     string token = 2;
+     string body = 3;
 }
 
 message DeleteTodoRequest {
-     string id = 1;
+     string userID = 1;
+     string token = 2;
+     string id = 3;
 }
 
 message ListUserTodosRequest {
      string userID = 1;
+     string token = 2;
 }
 
 message ListUserTodosResponse {
