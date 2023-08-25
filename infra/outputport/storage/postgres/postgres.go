@@ -4,6 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/FluffyKebab/todo/domain/todo"
+	_ "github.com/lib/pq"
 )
 
 type Storer struct {
@@ -13,8 +14,8 @@ type Storer struct {
 var _ todo.UserService = &Storer{}
 var _ todo.TodoService = &Storer{}
 
-func New(dsn string) (*Storer, error) {
-	db, err := sql.Open("postgres", dsn)
+func New(connString string) (*Storer, error) {
+	db, err := sql.Open("postgres", connString)
 	if err != nil {
 		return nil, err
 	}
@@ -28,7 +29,7 @@ func (s *Storer) Migrate() error {
 	_, err := s.db.Exec(`
 		CREATE TABLE IF NOT EXISTS users (
 			id TEXT NOT NULL, 
-			name TEXT NOT NULL,
+			name TEXT NOT NULL
 		);`,
 	)
 	if err != nil {
@@ -40,7 +41,7 @@ func (s *Storer) Migrate() error {
 			id TEXT NOT NULL, 
 			userID TEXT NOT NULL,
 			body TEXT NOT NULL,
-			done BOOLEAN NOT NULL,
+			done BOOLEAN NOT NULL
 		);`,
 	)
 	return err

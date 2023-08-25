@@ -2,6 +2,8 @@ package postgres
 
 import (
 	"context"
+	"database/sql"
+	"errors"
 
 	"github.com/FluffyKebab/todo/domain/todo"
 	"github.com/google/uuid"
@@ -9,13 +11,28 @@ import (
 
 func (s *Storer) CreateTodo(ctx context.Context, t todo.Todo) (string, error) {
 	todoId := uuid.NewString()
-	_, err := s.db.ExecContext(ctx, "INSERT INTO todos (id, userId, body, done) VALUES ($1, $2, $1, $2)",
+	_, err := s.db.ExecContext(ctx, "INSERT INTO todos (id, userId, body, done) VALUES ($1, $2, $3, $4)",
 		todoId,
 		t.UserID,
 		t.Body,
 		t.Done,
 	)
 	return todoId, err
+}
+
+func (s *Storer) GetTodo(ctx context.Context, id string) (todo.Todo, error) {
+	row := s.db.QueryRowContext(ctx, "SELECT * FROM todos WHERE id = $1", id)
+
+	var t todo.Todo
+	err := row.Scan(&t.ID, &t.UserID, &t.Body, &t.Done)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return todo.Todo{}, todo.ErrTodoNotFound
+		}
+		return todo.Todo{}, err
+	}
+
+	return t, err
 }
 
 func (s *Storer) UpdateTodo(ctx context.Context, t todo.UpdateTodoRequest) error {
