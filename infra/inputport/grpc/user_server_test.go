@@ -6,9 +6,9 @@ import (
 
 	"github.com/FluffyKebab/todo/domain/todo"
 	"github.com/FluffyKebab/todo/infra/inputport/grpc/pb"
-	"github.com/FluffyKebab/todo/infra/outputport/auth/jwt"
-	"github.com/FluffyKebab/todo/infra/outputport/log/testlog"
-	"github.com/FluffyKebab/todo/infra/outputport/storage/mock"
+	"github.com/FluffyKebab/todo/infra/outputadapter/auth/jwt"
+	"github.com/FluffyKebab/todo/infra/outputadapter/log/testlog"
+	"github.com/FluffyKebab/todo/infra/outputadapter/storage/mock"
 	"github.com/stretchr/testify/require"
 )
 
