@@ -1,0 +1,31 @@
+version: '3.9'
+services:
+  app:
+    container_name: todo_server_container
+    env_file:
+      - .env
+    build: .
+    ports:
+      - 9090:9090
+    restart: on-failure
+    depends_on:
+      - postgresdb
+    networks:
+      - learning
+
+  postgresdb:
+    image: postgres:latest
+    container_name: postgres_container
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - DATABASE_HOST=${DB_HOST}
+    ports:
+      - '${DB_PORT}:5432'
+    networks:
+      - learning
+
+networks:
+  learning:
+    driver: bridge
