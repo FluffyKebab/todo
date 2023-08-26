@@ -12,6 +12,12 @@ services:
       - postgresdb
     networks:
       - learning
+    healthcheck:
+      test: /app/health
+      interval: 60s
+      retries: 5
+      timeout: 5s
+      start_period: 10s
 
   postgresdb:
     image: postgres:latest
