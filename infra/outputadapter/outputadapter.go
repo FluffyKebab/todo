@@ -6,6 +6,7 @@ import (
 	"github.com/FluffyKebab/todo/app"
 	"github.com/FluffyKebab/todo/infra/outputadapter/auth/jwt"
 	"github.com/FluffyKebab/todo/infra/outputadapter/log/console"
+	"github.com/FluffyKebab/todo/infra/outputadapter/storage/cache"
 	"github.com/FluffyKebab/todo/infra/outputadapter/storage/postgres"
 )
 
@@ -56,11 +57,13 @@ func NewServices(c Config) (*app.App, error) {
 		return nil, fmt.Errorf("running migrations: %w", err)
 	}
 
+	memoryCache := cache.New(s, s)
+
 	return &app.App{
 		Logger:      l,
 		Auth:        jwt.NewAuthenticator(c.AuthTokenSecretKey),
-		UserService: s,
-		TodoService: s,
+		UserService: memoryCache,
+		TodoService: memoryCache,
 	}, nil
 }
 

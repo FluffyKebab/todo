@@ -29,6 +29,7 @@ type UpdateTodoRequest struct {
 
 type TodoService interface {
 	CreateTodo(context.Context, Todo) (string, error)
+	GetTodo(context.Context, string) (Todo, error)
 	UpdateTodo(context.Context, UpdateTodoRequest) error
 	DeleteTodo(ctx context.Context, id string) error
 	GetUserTodos(ctx context.Context, userId string) ([]Todo, error)
