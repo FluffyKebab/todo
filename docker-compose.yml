@@ -25,6 +25,11 @@ services:
       - '${DB_PORT}:5432'
     networks:
       - learning
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+
+volumes:
+  postgres-db:
 
 networks:
   learning:
