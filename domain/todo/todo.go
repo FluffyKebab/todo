@@ -6,15 +6,15 @@ import (
 )
 
 type User struct {
-	ID   string
-	Name string
+	ID   string `bson:"id"`
+	Name string `bson:"name"`
 }
 
 type Todo struct {
-	ID     string
-	UserID string
-	Body   string
-	Done   bool
+	ID     string `bson:"id"`
+	UserID string `bson:"userId"`
+	Body   string `bson:"body"`
+	Done   bool   `bson:"done"`
 }
 
 type UserService interface {
