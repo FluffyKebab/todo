@@ -39,6 +39,7 @@ func readEnvironment() (outputadapter.Config, error) {
 	config.DatabasePort = os.Getenv("DB_PORT")
 	config.DatabaseName = os.Getenv("DB_NAME")
 	config.DatabaseHost = os.Getenv("DB_HOST")
+	config.DatabaseType = outputadapter.DatabaseType(os.Getenv("DB_TYPE"))
 	config.AuthTokenSecretKey = os.Getenv("AUTH_SECRET_KEY")
 	config.ServerPort = os.Getenv("PORT")
 

@@ -1,0 +1,32 @@
+version: '3.9'
+services:
+  app:
+    extends: 
+      file: docker-compose.common.yml
+      service: app
+    depends_on:
+      - mongodb
+    environment:
+      - DB_HOST=mongodb
+      - DB_PORT=27017
+      - DB_TYPE=mongo
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongo_container
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${DB_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${DB_PASSWORD}
+    ports:
+      - '27017:27017'
+    networks:
+      - learning
+    volumes:
+      - mongodb:/data/db
+
+volumes:
+  mongodb:
+
+networks:
+  learning:
+    driver: bridge
