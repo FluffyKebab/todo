@@ -5,6 +5,7 @@ package proto;
 service TodoService {
      rpc HealthCheck(HealthCheckRequest) returns (HealthCheckResponse);
      rpc CreateTodo(CreateTodoRequest) returns (CreateTodoResponse);
+     rpc GetTodo(GetTodoRequest) returns (Todo);
      rpc UpdateTodoDone(UpdateTodoDoneRequest) returns (EmptyResponse);
      rpc UpdateTodoBody(UpdateTodoBodyRequest) returns (EmptyResponse);
      rpc DeleteTodo(DeleteTodoRequest) returns (EmptyResponse);
@@ -37,6 +38,10 @@ message CreateTodoRequest {
 }
 
 message CreateTodoResponse {
+     string id = 1;
+}
+
+message GetTodoRequest {
      string id = 1;
 }
 

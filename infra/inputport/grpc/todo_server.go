@@ -46,6 +46,25 @@ func (s *todoServer) CreateTodo(ctx context.Context, req *pb.CreateTodoRequest) 
 	return &pb.CreateTodoResponse{Id: todoId}, nil
 }
 
+func (s *todoServer) GetTodo(ctx context.Context, req *pb.GetTodoRequest) (*pb.Todo, error) {
+	t, err := s.todoService.GetTodo(ctx, req.Id)
+	if err != nil {
+		if errors.Is(err, todo.ErrTodoNotFound) {
+			s.logger.Warning("delete on error not found")
+			return nil, status.Error(codes.NotFound, err.Error())
+		}
+
+		s.logger.Error(fmt.Errorf("getting todo: %w", err))
+	}
+
+	return &pb.Todo{
+		Id:     t.ID,
+		UserID: t.UserID,
+		Body:   t.Body,
+		Done:   t.Done,
+	}, nil
+}
+
 func (s *todoServer) UpdateTodoDone(ctx context.Context, req *pb.UpdateTodoDoneRequest) (*pb.EmptyResponse, error) {
 	err := authenticate(s.auth, req.Token, req.UserID)
 	if err != nil {
